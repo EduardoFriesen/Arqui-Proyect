@@ -1,0 +1,29 @@
+       
+        SUB R0,R15,R15
+INICIO:
+        ADD R3,R0,#15
+        ADD R2,R0,#0
+Loop:
+        LDR R4,[R2]     //cargo la palabra en la  direccion que apunta R2 en R4
+        STR R4,[R0,#0x800] //almaceno la palabra contenida en R4 en la direccion de memoria 0x800
+        ADD R5,R0,#1    //inicializo delay en cero
+DELAY:   SUBS R5,R5,#1  //delay restandole uno hasta llegar a cero (timempo delay)
+        BNE DELAY       //al llegar a cero se cambia la bandera Z y finaliza delay
+        ADD R2,R2,#4    // aumento R2 en una palabra(32 bites)
+        SUBS R3,R3,#1  // disminuyo en uno el contador del Loop
+        BNE Loop       //mientras el contador no llegue a cero se repite el Loop
+        b INICIO
+//////////////////////////
+        SUB R0,R15,R15
+        ADD R3,R0,#15
+        ADD R2,R0,#0
+        LDR R4,[R2]
+        STR R4,[R0,#0x800]
+        ADD R5,R0,#1
+        SUBS R5,R5,#1 //tiempo delay
+        BNE 0x18
+        ADD R2,R2,#4
+        SUBS R3,R3,#1
+        BNE 0xc
+        b 0x4
+//////////////////////////

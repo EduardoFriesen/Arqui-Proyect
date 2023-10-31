@@ -1,0 +1,128 @@
+00000080        10000000
+00000040        01000000
+00000020        00100000
+00000010        00010000
+00000008        00001000
+00000004        00000100
+00000002        00000010
+00000001        00000001
+00000002        00000010
+00000004        00000100
+00000008        00001000
+00000010        00010000
+00000020        00100000
+00000040        01000000
+00000080        10000000
+
+//////lectura de tabla en archivo
+        SUB R0,R15,R15
+        ADD R3,R0,#15
+        ADD R2,R0,#0
+        LDR R4,[R2]
+        STR R4,[R0,#0x800]
+        ADD R5,R0,#1
+        SUBS R5,R5,#1 
+        BNE 0x18
+        ADD R2,R2,#4
+        SUBS R3,R3,#1
+        BNE 0xc
+        b 0x4
+
+////////////////
+//////algoritmo
+////////////////
+00000040        64
+00000020        32
+00000010        16
+00000008        8
+00000004        4
+00000002        2
+00000001        1
+00000000        0
+
+
+        SUB R0,R15,R15
+inicio: ADD R1,R0,#128
+        ADD R3,R0,#0
+        ADD R4,R0,#8
+loop 1:  STR R1,[R0,0x800]
+        LDR R2,[R3]
+        SUB R1,R1,R2
+        ADD R3,R3,#4
+        ADD R5,R0,#1 
+retardo 1:SUBS R5,R5,#1
+        BNE retardo 1
+        SUBS R4,R4,#1
+        BNE loop 1
+        ADD R4,R0,#6
+        STR R1,[R0,0x800]
+loop 2:
+        ADD R1,R1,R1
+        STR R1,[R0,0x800]
+        ADD R5,R0,#1 
+        retardo 2:SUBS R5,R5,#1
+        BNE retardo 2
+        SUBS R4,R4,#1
+        BNE loop 2
+        b inicio
+
+
+        SUB R0,R15,R15
+        ADD R1,R0,#128
+        ADD R3,R0,#0
+        ADD R4,R0,#8
+        STR R1,[R0,0x800]
+        LDR R2,[R3]
+        SUB R1,R1,R2
+        ADD R3,R3,#4
+        ADD R5,R0,#1 
+        SUBS R5,R5,#1
+        BNE 0x24
+        SUBS R4,R4,#1
+        BNE 0x10
+        ADD R4,R0,#6
+        STR R1,[R0,0x800]
+        ADD R5,R0,#1 
+        SUBS R5,R5,#1
+        BNE 0x44
+        ADD R1,R1,R1
+        STR R1,[R0,0x800]
+        SUBS R4,R4,#1
+        BNE 0x48
+        b 0x4
+
+
+
+
+
+        ///////////////modificado anda
+sub r0, pc, pc
+add r4, r0, #7
+add r8, r0, #0
+add r6, r0, #0x80
+str r6, [r0, #0x800]
+add r5, r0, #6
+add r7, r0, #1
+subs r5, r5, r8
+beq #0x30
+subs r5, r5, #1
+add r7, r7, r7
+bne #0x24
+add r8, r8, #1
+sub r6, r6, r7
+ldr sb, [r0, #4]
+subs sb, sb, #1
+bne #0x3c
+subs r4, r4, #1
+bne #0x10
+str r6, [r0, #0x800]
+add r4, r0, #7
+add r6, r6, r6
+ldr sb, [r0, #4]
+subs sb, sb, #1
+bne #0x5c
+str r6, [r0, #0x800]
+subs r4, r4, #1
+bne #0x54
+b #0
+
